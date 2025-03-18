@@ -4,6 +4,7 @@ clc;
 
 %%
 data
+ModelParams
 
 %% PID design
 ts=0.15;
@@ -19,7 +20,7 @@ phim = atan(num2/den2) ;%* 180 / pi; % in degree
 %phim = num2/den2;
 %% Transfer function
 num = km;
-den = n*i*wgc*(tm*i*wgc+1);
+den = n*1i*wgc*(tm*1i*wgc+1);
 p=num/den;
 
 %% 
