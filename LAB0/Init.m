@@ -1,5 +1,18 @@
-% This file is automatically called bu the simulink when 
-% simulation starts. 
+% PROJECT STRUCTURE OVERVIEW
+%
+% MATLAB Scripts (.m files):
+% - Init.m                 : Automatically loads at the start of each simulation.  
+%                            Contains datasheet values and PID controller design.  
+% - Parameters_Estimation.m : Computes parameter estimations.  
+%                            Runs respective Simulink simulations and processes the output.  
+% - Plotting.m             : Handles visualization and plotting of simulation results.  
+% - window_average.m       : Implements a window averaging function for signal processing.  
+%
+% Simulink Models (.slx files):
+% - PID_validation.slx      : Validates the PID controller.  
+% - Inertia_Estimation.slx  : Estimates system inertia.  
+% - Friction_Estimation.slx : (TODO) Develop a model for friction estimation.  
+% - RealTimeSimulation.slx  : Runs real-time simulation of the system in lab
 
 clear
 close all
