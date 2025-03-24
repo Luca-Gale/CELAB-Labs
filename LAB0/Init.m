@@ -1,3 +1,6 @@
+% This file is automatically called bu the simulink when 
+% simulation starts. 
+
 clear
 close all
 clc
@@ -53,9 +56,9 @@ mld.Beq = 2e-6;                 % Total Viscous Friction
 mld.J = mld.JD + gbox.J;        % total inertia
 mld.B = 2.5e-4;                 % total viscous friction coeff (estimated)
 mld.tausf = 1.0e-2;             % total static friction (estimated)
-mld.Jm = 3.9e-7;                % Motor Inertia
+mld.Jm = 3.9e-7;                % Motor Inertia (?)
 
-mld.Jeq = mld.Jm + mld.J / gbox.N^2;% Total Inertia
+mld.Jeq = mld.Jm + mld.J / gbox.N^2;  % Total Inertia (?)
 
 % >>>>>>>> Voltage driver nominal parameters
 
@@ -108,11 +111,21 @@ daq.adc.q = 2*daq.adc.fs/(2^daq.adc.bits-1);    % Quantization
 
 Ts = 0.001;                                     % Sampling Time
 
+%%
+% Filters parameters
+delta_est = 1/sqrt(2);
+wc = 2*pi*20;
+
 %% Controller Design
+
+% TODO: implement a function to find the optimal alpha
+
 % Simplified Model Params
 beq = 0;
-km = (drv.dcgain * mot.Kt) / (mot.Req*beq + mot.Kt*mot.Ke) ;
-tm =   (mot.Req*mld.Jeq)   / (mot.Req*beq + mot.Kt*mot.Ke) ;
+km = (drv.dcgain * mot.Kt) / ...
+     (mot.Req*beq + mot.Kt*mot.Ke);
+Tm = (mot.Req*mld.Jeq) / ...
+     (mot.Req*beq + mot.Kt*mot.Ke);
 
 % Controller Design Params
 ts    = 0.15;
@@ -128,60 +141,24 @@ phim = atan2(2 * delta, ...
              sqrt(sqrt(1 + 4*delta^4) - 2*delta^2));
 
 % Transfer function
-p = km / ...
-    (gbox.N*1i*wgc * (tm*1i*wgc + 1));
+P = km / ...
+    (gbox.N*1i*wgc * (Tm*1i*wgc + 1));
 
 % Controller Bode Gain
-abs_p = abs(p);
-deltak = 1/abs_p;
-deltaphi = -pi + phim - angle(p);
+abs_P = abs(P);
+deltak = 1/abs_P;
+deltaphi = -pi + phim - angle(P);
 
 % Controller Gains
 Kp = deltak * cos(deltaphi);
-Td = (tan(deltaphi) + (sqrt(tan(deltaphi)^2 + (4/alpha)))) / (2*wgc);
+tanphi = tan(deltaphi);
+Td = (tanphi + sqrt(tanphi^2 + 4/alpha)) / ...
+     (2*wgc);
 Ti = alpha * Td;
 Kd = Kp * Td;
 Ki = Kp / Ti;
 
 tl = 1/(3*wgc); % proportional coefficient between 2-5. Chosen 3
 
-%% PARAMETER ESTIMATION
-delta_est = 1/sqrt(2);
-wc = 2*pi*20;
 
-%% Inertia estimation
-% Substitute these with the estimated values when available
-Beq = 2.0e-6;
-tau_sf = 1.0e-2;
 
-% Computing averages on constant windows
-a_m_mean = window_average(out.a_m, 2, 10, [0.4, 0.9], [1.4, 1.9], 0);
-tau_i_mean = window_average(out.tau_i, 2, 10, [0.2, 0.8], [1.2, 1.8], 0);
-
-% Computing estimated inertia
-N_periods = 10;
-avg = 0;
-for k = 1:N_periods
-    new = ( (tau_i_mean(k,1) - tau_i_mean(k,2)) / (a_m_mean(k,1) - a_m_mean(k,2)) );
-    avg = avg + new;
-    disp(new);J
-end
-Jeq_hat = avg/N_periods;
-
-%% FRICTION ESTIMATOR
-% Computing averages on constant windows
-w_m_acc_mean = friction_window_average(out.w_m_acc, 5, 0, 9, [1, 4], 1);
-w_m_dec_mean = friction_window_average(out.w_m_dec, 5, 45, 9, [1, 4], 1);
-
-tau_m_acc_mean = friction_window_average(out.tau_m_acc, 5, 0, 9, [1, 4], 1);
-tau_m_dec_mean = friction_window_average(out.tau_m_dec, 5, 45, 9, [1, 4], 1);
-
-Phi_T_acc = [w_m_acc_mean (1/n)*sign(w_m_acc_mean)];
-Y_acc = [tau_m_acc_mean];
-
-theta_hat_LS_acc = inv(Phi_T_acc' * Phi_T_acc) * Phi_T_acc' * Y_acc;
-
-Phi_T_dec = [w_m_dec_mean (1/n)*sign(w_m_dec_mean)];
-Y_dec = [tau_m_dec_mean];
-
-theta_hat_LS_dec = inv(Phi_T_dec' * Phi_T_dec) * Phi_T_dec' * Y_dec;
