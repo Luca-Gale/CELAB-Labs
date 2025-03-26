@@ -15,9 +15,6 @@
 % - Friction_Estimation.slx : (TODO) Develop a model for friction estimation.  
 % - RealTimeSimulation.slx  : Runs real-time simulation of the system in lab
 
-clear
-close all
-clc
 
 %% Parameter Declaration
 % conversion gains
