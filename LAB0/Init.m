@@ -171,5 +171,7 @@ Ki = Kp / Ti;
 
 tl = 1/(3*wgc); % proportional coefficient between 2-5. Chosen 3
 
-
+%%PID wind-up parameters
+Tw = ts/5;
+Kw = 1/Tw;
 
