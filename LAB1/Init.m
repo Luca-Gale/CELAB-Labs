@@ -1,8 +1,4 @@
-% TODO : Completer the PROJECT STRUCTURE OVERVIEW
-
-clear
-close all
-clc
+% TODO : Complete the PROJECT STRUCTURE OVERVIEW
 
 %% Parameter Declaration
 % conversion gains
@@ -110,7 +106,7 @@ daq.adc.q = 2*daq.adc.fs/(2^daq.adc.bits-1);    % Quantization
 
 Ts = 0.001;                                     % Sampling Time
 
-% Filters parameters
+% State Estimation Filter parameters
 delta_est = 1/sqrt(2);
 wc = 2*pi*20;
 
@@ -120,9 +116,8 @@ Beq = 1.223604206496999e-06;          % Equivalent Viscous Friction [Nm/(mot.Rd/
 Tau_sf = 0.005709536387019;           % Static Friction [Nm]
 
 %% Recalculating Constants
-Denominator = mot.Req * Beq + mot.Kt * mot.Ke;
-Tm = (mot.Req * Jeq_hat) / Denominator;
-km = (drv.dcgain * mot.Kt) / Denominator;
+Tm = (mot.Req * Beq + mot.Kt*mot.Ke) / (mot.Req * Jeq_hat);
+km = (drv.dcgain * mot.Kt) / (gbox.N * mot.Req * Jeq_hat);
 
 %% State-Space Matrices
 A = [0, 1; 0, -1/Tm];
