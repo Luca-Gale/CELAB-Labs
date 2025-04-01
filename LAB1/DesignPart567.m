@@ -19,7 +19,7 @@ Lambda = Wn * exp(1j*(-pi + [pi/4, -pi/4, pi/6, -pi/6, 0]));
 
 
 %% Design and Validate(Part 5 6)
-TrCandidates = [0.15, 0.25, 0.5 1];     % Sine Sig Period Candidates
+TrCandidates = [0.15, 0.25, 1, 0.5];     % Sine Sig Period Candidates
 % TrCandidates = [0.5];
 
 % Load System
@@ -144,4 +144,4 @@ title("BB Model Output")
 legend
 grid on
 
-sgtitle(['Part 7. sine Signal with Period = ' num2str(Tr)], 'FontSize', 25, 'FontWeight', 'Bold')
+sgtitle('Part 7', 'FontSize', 25, 'FontWeight', 'Bold')
