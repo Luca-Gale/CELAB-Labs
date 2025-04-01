@@ -1,9 +1,5 @@
 % TODO : Complete the PROJECT STRUCTURE OVERVIEW
 
-clear
-close all
-clc
-
 %% Parameter Declaration
 % conversion gains
 rpm2rads = 2*pi/60;         % [rpm] -> [rad/s]
