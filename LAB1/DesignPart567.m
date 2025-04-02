@@ -6,6 +6,22 @@ clc
 Init
 addpath('../LAB0/')
 
+%% Primary Parameter Declaration
+% Estimated Parameters
+Jeq_hat = 5.801020129074022e-05;      % Equivalent Inertia [kg.m^2]
+Beq = 1.223604206496999e-06;          % Equivalent Viscous Friction [Nm/(mot.Rd/s)]
+Tau_sf = 0.005709536387019;           % Static Friction [Nm]
+
+% Recalculating Constants
+Tm = (mot.Req * Beq + mot.Kt*mot.Ke) / (mot.Req * Jeq_hat);
+km = (drv.dcgain * mot.Kt) / (gbox.N * mot.Req * Jeq_hat);
+
+% State-Space Matrices
+A = [0, 1; 0, -1/Tm];
+B = [0, km/(gbox.N*Tm)]';
+C = [1, 0];
+D = 0;
+
 %% Design and Test
 % Desired Second Order System Characteristics
 Mp = 0.1;           % Over Shoot Percent
