@@ -127,3 +127,11 @@ D = 0;
 
 % % Transfer Function
 % TFModel = tf(ss(A, B, C, D));
+
+%% PID wind-up parameters
+ts = 0.15;
+Tw = ts/5;
+Kw = 1/Tw;
+
+%% feedforward compensation parameters
+k_drv = (1 + drv.R3/drv.R4) * drv.R2/(drv.R1 + drv.R2);

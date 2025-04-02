@@ -171,9 +171,4 @@ Ki = Kp / Ti;
 
 tl = 1/(3*wgc); % proportional coefficient between 2-5. Chosen 3
 
-%% PID wind-up parameters
-Tw = ts/5;
-Kw = 1/Tw;
 
-%% feedforward compensation parameters
-k_drv = (1 + drv.R3/drv.R4) * drv.R2/(drv.R1 + drv.R2);
