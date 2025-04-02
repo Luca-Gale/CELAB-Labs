@@ -90,3 +90,6 @@ legend
 grid on
 
 sgtitle('Part 8. Step Signal', 'FontSize', 25, 'FontWeight', 'Bold')
+
+% Close System
+close_system("Part8.slx");
