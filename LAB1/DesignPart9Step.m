@@ -62,6 +62,8 @@ L = place(Ae', Ce', ObsvPoles(1:end-1))';
 K = real(K);
 L = real(L);
 
+Krho = [Crho, K];
+
 %%% Simulate the System and Plot Results
 out = sim("Part9Step.slx");
 

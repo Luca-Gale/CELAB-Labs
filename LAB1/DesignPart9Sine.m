@@ -66,6 +66,8 @@ for i = 1:numel(TrCandidates)
     K = real(K);
     L = real(L);
 
+    Krho = [Crho, K];
+
     %%% Simulate the System and Plot Results
     out = sim("Part9Sine.slx");
 
