@@ -36,9 +36,8 @@ ObsvPoles = 2*Wn * exp(1j*(-pi + [pi/3, -pi/3, pi/6, -pi/6, 0]));
 
 %% Reference + Disturbance Exo-System
 % Input Specifications
-AmpRef = 40;
-Cw1 = 1;        % Disturbance Step Gain
-Cw2 = 40;       % Reference Step Gain
+Cw1 = deg2rad * 1;        % Disturbance Step Gain
+Cw2 = deg2rad * 40;       % Reference Step Gain
 
 % Make the Simulation Ready
 load_system("Part9Step.slx");
@@ -61,6 +60,8 @@ L = place(Ae', Ce', ObsvPoles(1:end-1))';
 
 K = real(K);
 L = real(L);
+
+Krho = [Crho, K];
 
 %%% Simulate the System and Plot Results
 out = sim("Part9Step.slx");

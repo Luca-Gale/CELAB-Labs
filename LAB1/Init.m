@@ -174,6 +174,7 @@ wn = 3/(delta_est * ts); % ERRORE
 %delta2 = log(1/mp) / sqrt((pi*pi) +(log(1/mp)*log(1/mp)));
 
 %% high pass ("real derivative")
+delta_h1 = 1 / sqrt(2);
 wc = 2*pi*50;
 
 %% State Space
