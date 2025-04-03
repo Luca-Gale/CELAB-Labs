@@ -161,3 +161,6 @@ legend
 grid on
 
 sgtitle('Part 7', 'FontSize', 25, 'FontWeight', 'Bold')
+
+% Close System
+close_system("Part5.slx");
