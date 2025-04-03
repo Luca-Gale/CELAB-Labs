@@ -113,9 +113,9 @@ wc = 2*pi*20;
 % % Transfer Function
 % TFModel = tf(ss(A, B, C, D));
 
-%% PID wind-up parameters
+%% PID anti-windup parameters
 ts = 0.15;
-mp    = 0.1;
+mp = 0.1;
 alpha = 84;
 delta = log(1/mp) / ...
         sqrt(pi^2 + (log(1/mp))^2);
@@ -127,6 +127,11 @@ phim = atan2(2 * delta, ...
 Tw = ts/5;
 Kw = 1/Tw;
 % Transfer function
+beq = 0;
+km = (drv.dcgain * mot.Kt) / ...
+     (mot.Req*beq + mot.Kt*mot.Ke);
+Tm = (mot.Req*mld.Jeq) / ...
+     (mot.Req*beq + mot.Kt*mot.Ke);
 P = km / ...
     (gbox.N*1i*wgc * (Tm*1i*wgc + 1));
 
@@ -154,7 +159,7 @@ Jeq = mot.J + (Jl / gbox .N1 ^2) ;
 %Jeq = 5.801020129074022e-05;
 Beq = 1.223604206496999e-06;
 
-wn = 3/(delta_est * ts);
+wn = 3/(delta_est * ts); % ERRORE
 %delta2 = log(1/mp) / sqrt((pi*pi) +(log(1/mp)*log(1/mp)));
 
 %% high passs ("real derivative")
