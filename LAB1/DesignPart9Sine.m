@@ -37,8 +37,8 @@ ObsvPoles = 2*Wn * exp(1j*(-pi + [pi/3, -pi/3, pi/6, -pi/6, 0]));
 %% Reference + Disturbance Exo-System
 % Input Specifications
 TrCandidates = [0.15, 0.25, 1, 0.5];     % Sine Sig Period Candidates
-AmpRef = 40;
-Cw = 1;
+AmpRef = deg2rad * 40;
+Cw = deg2rad * 1;
 
 % Make the Simulation Ready
 load_system("Part9Sine.slx");
