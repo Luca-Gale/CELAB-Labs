@@ -18,9 +18,7 @@
 %% Load datasheet into workspace
 datasheet;
 
-
-%%
-% Filters parameters
+%% Filters parameters
 delta_est = 1/sqrt(2);
 wc = 2*pi*20;
 
@@ -68,4 +66,7 @@ Ki = Kp / Ti;
 
 tl = 1/(3*wgc); % proportional coefficient between 2-5. Chosen 3
 
+% When PID tuning is done, uncomment this line to save the gains in 
+% 'utilities' folder and make them accessible across all labs
 
+% save('../utilities/PID_gains', 'Kp', 'Kd', 'Ki', 'tl');
