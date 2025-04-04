@@ -49,8 +49,8 @@ mld.Beq = 2e-6;                 % Total Viscous Friction
 mld.J = mld.JD + gbox.J;        % total inertia
 mld.B = 2.5e-4;                 % total viscous friction coeff (estimated)
 mld.tausf = 1.0e-2;             % total static friction (estimated)
-mld.Jm = 3.9e-7;                % Motor Inertia (?)
 
+mld.Jm = 3.9e-7;                % Motor Inertia (?)
 mld.Jeq = mld.Jm + mld.J / gbox.N^2;  % Total Inertia (?)
 
 % >>>>>>>> Voltage driver nominal parameters
