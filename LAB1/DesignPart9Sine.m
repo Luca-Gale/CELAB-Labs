@@ -8,17 +8,17 @@ addpath('../LAB0/')
 
 %% Primary Parameter Declaration
 % Estimated Parameters
-Jeq_hat = 5.801020129074022e-05;      % Equivalent Inertia [kg.m^2]
-Beq = 1.223604206496999e-06;          % Equivalent Viscous Friction [Nm/(mot.Rd/s)]
-Tau_sf = 0.005709536387019;           % Static Friction [Nm]
+Jeq_hat = 5.801020129074022e-07;      % Equivalent Inertia [kg.m^2]
+Beq     = 1.223604206496999e-06;          % Equivalent Viscous Friction [Nm/(mot.Rd/s)]
+Tau_sf  = 0.005709536387019;           % Static Friction [Nm]
 
 % Recalculating Constants
-Tm = (mot.Req * Beq + mot.Kt*mot.Ke) / (mot.Req * Jeq_hat);
-km = (drv.dcgain * mot.Kt) / (gbox.N * mot.Req * Jeq_hat);
+a22 = (mot.Req * Beq + mot.Kt*mot.Ke) / (mot.Req * Jeq_hat);
+b2 = (drv.dcgain * mot.Kt) / (gbox.N * mot.Req * Jeq_hat);
 
 % State-Space Matrices
-A = [0, 1; 0, -1/Tm];
-B = [0, km/(gbox.N*Tm)]';
+A = [0, 1; 0, a22];
+B = [0, b2]';
 C = [1, 0];
 D = 0;
 
@@ -42,7 +42,6 @@ Cw = deg2rad * 1;
 
 % Make the Simulation Ready
 load_system("Part9Sine.slx");
-
 
 for i = 1:numel(TrCandidates)
     Tr = TrCandidates(i);   % Reference Period

@@ -3,6 +3,7 @@
 % IMPORTANT: add 'utilities' folder to path
 
 %% Load datasheet into workspace
+addpath("../utilities/")
 datasheet;                            
 
 %% Filters parameters
