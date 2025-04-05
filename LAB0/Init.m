@@ -15,6 +15,7 @@
 % - Friction_Estimation.slx : (TODO) Develop a model for friction estimation.  
 % - RealTimeSimulation.slx  : Runs real-time simulation of the system in lab
 
+% IMPORTANT: add 'utilities' folder to path
 %% Load datasheet into workspace
 datasheet;
 
