@@ -112,3 +112,9 @@ Ce =[0 C];
 K_robust  = acker (Ae , Be , poles2 );
 KI = K_robust(1);
 K2 = K_robust(2:3);
+
+%% Tune the antiwindup parameter
+gainRange = linspace(0,0.1,10);
+tuneAntiwindupParallel(gainRange, 'Copy_of_PID_Validation.slx', 'antiwindup_results.mat');
+
+
