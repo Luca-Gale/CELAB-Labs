@@ -7,9 +7,18 @@ Init
 addpath('../LAB0/')
 
 %% Primary Parameter Declaration
+% Estimated Parameters
+Jeq_hat = 5.801020129074022e-07;      % Equivalent Inertia [kg.m^2]
+Beq     = 1.223604206496999e-06;      % Equivalent Viscous Friction [Nm/(mot.Rd/s)]
+Tau_sf  = 0.005709536387019;          % Static Friction [Nm]
+
+% Recalculating Constants
+a22 = (mot.Req * Beq + mot.Kt*mot.Ke) / (mot.Req * Jeq_hat);
+b2 = (drv.dcgain * mot.Kt) / (gbox.N * mot.Req * Jeq_hat);
+
 % State-Space Matrices
-A = [0, 1; 0, -1/Tm];
-B = [0, km/(gbox.N*Tm)]';
+A = [0, 1; 0, a22];
+B = [0, b2]';
 C = [1, 0];
 D = 0;
 
@@ -22,8 +31,13 @@ Zeta = log(1/Mp) / sqrt(pi^2 + log(1/Mp)^2);
 Wn = 3 / Zeta / Ts;
 
 % Specify Poles
-Lambda = Wn * exp(1j*(-pi + [pi/4, -pi/4, pi/6, -pi/6, 0]));
+L1 = 2*Wn*exp(1j*(-pi + pi/4));
+L2 = conj(L1);
+L3 = 2*Wn*exp(1j*(-pi + pi/6));
+L4 = conj(L3);
+L5 = -2*Wn;
 
+Lambda = [L1, L2, L5];
 
 %% Design and Validate (Part 8)
 
@@ -41,7 +55,7 @@ Az = [Ar, C; zeros(2, 1), A];
 Bz = [0; B];
 
 % Controller Design
-K = place(Az, Bz, Lambda(1:end-2));
+K = place(Az, Bz, Lambda);
 K = real(K);
 
 % Simulate the System
