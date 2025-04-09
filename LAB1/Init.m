@@ -11,9 +11,7 @@ delta_est = 1/sqrt(2);
 wc = 2*pi*20;
 
 % Estimated Parameters
-Jeq_hat = 5.801020129074022e-05;      % Equivalent Inertia [kg.m^2]
-Beq = 1.223604206496999e-06;          % Equivalent Viscous Friction [Nm/(mot.Rd/s)]
-Tau_sf = 0.005709536387019;           % Static Friction [Nm]
+load('black-box-estimation.mat');
 
 % Recalculating Constants
 Tm = (mot.Req * Beq + mot.Kt*mot.Ke) / (mot.Req * Jeq_hat);
