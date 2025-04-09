@@ -19,6 +19,7 @@ thLS_hat = Phi_T\Y;
 Beq_hat_pos = thLS_hat(1);
 tau_sf_pos = thLS_hat(2);
 
+
 % Negative velocity
 set_param(['Friction_Estimation' '/Manual Switch'], 'sw', '0'); % Set first input
 out = sim("Friction_Estimation.slx");
@@ -30,10 +31,12 @@ thLS_hat = Phi_T\Y;
 Beq_hat_neg = thLS_hat(1);
 tau_sf_neg = thLS_hat(2);
 
+
 close_system('Friction_Estimation', 0);
 
 Beq = (Beq_hat_pos + Beq_hat_neg)/2
 tau_sf = (abs(tau_sf_pos)+abs(tau_sf_neg))/2
+save('black-box-estimation', "Beq", "tau_sf");
 
 %% Not revisioned
 % V_theta_LS_acc = (Y_acc - Phi_T_acc * theta_hat_LS_acc)' * (Y_acc - Phi_T_acc * theta_hat_LS_acc);
@@ -74,5 +77,6 @@ for k = 1:N_periods
 end
 
 Jeq_hat = avg/N_periods
+save('black-box-estimation', "Jeq_hat", '-append');
 
 close_system('Inertia_Estimation', 0);
