@@ -1,8 +1,8 @@
 function [riseTime, settlingTime, overshoot] = analyze_step_response(reference, response)
     % Extract time and values
-    t = response.time;
-    y = response.signals.values;
-    r = reference.signals.values;
+    t = response.Time;
+    y = response.Data;
+    r = reference.Data;
 
     % Use final reference value as target
     finalValue = r(end);
