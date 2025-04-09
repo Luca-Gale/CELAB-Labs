@@ -45,24 +45,24 @@ mp    = 0.1;
 % 'utilities' folder and make them accessible across all labs
 
 % save('../utilities/PID_gains', 'Kp', 'Kd', 'Ki', 'tl');
-
 %% Analisys
-if ~evalin('base', 'exist(''out'', ''var'')')
-    warning('Variable ''out'' not found in base workspace.');
-else
-    out = evalin('base', 'out');
 
-    try
-        ref = out.ref;
-        y = out.y;
-    catch
-        error('The ''out'' object does not contain ref and y.');
-    end
-   
-        [riseTime, settlingTime, overshoot] = analyze_step_response(out.ref, out.y);
-        fprintf('\n--- Step Response Analysis ---\n');
-        fprintf('Rise Time     : %.4f s\n', riseTime);
-        fprintf('Settling Time : %.4f s\n', settlingTime);
-        fprintf('Overshoot     : %.2f %%\n', overshoot); 
-        fprintf('-------------------------------\n\n');
-end
+% if ~evalin('base', 'exist(''out'', ''var'')')
+%     warning('Variable ''out'' not found in base workspace.');
+% else
+%     out = evalin('base', 'out');
+% 
+%     try
+%         ref = out.ref;
+%         y = out.y;
+%     catch
+%         error('The ''out'' object does not contain ref and y.');
+%     end
+% 
+%         [riseTime, settlingTime, overshoot] = analyze_step_response(out.ref, out.y);
+%         fprintf('\n--- Step Response Analysis ---\n');
+%         fprintf('Rise Time     : %.4f s\n', riseTime);
+%         fprintf('Settling Time : %.4f s\n', settlingTime);
+%         fprintf('Overshoot     : %.2f %%\n', overshoot); 
+%         fprintf('-------------------------------\n\n');
+% end

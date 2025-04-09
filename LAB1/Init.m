@@ -10,21 +10,26 @@ datasheet;
 delta_est = 1/sqrt(2);
 wc = 2*pi*20;
 
-% Estimated Parameters
+%% Estimated Parameters for black box model
 load('black-box-estimation.mat');
 
-% Recalculating Constants
-Tm = (mot.Req * Beq + mot.Kt*mot.Ke) / (mot.Req * Jeq_hat);
-km = (drv.dcgain * mot.Kt) / (gbox.N * mot.Req * Jeq_hat);
+%% PID design (using estimated params)
+km = (drv.dcgain * mot.Kt) / (mot.Req * Beq + mot.Kt * mot.Ke);
+Tm = (mot.Req * Jeq_hat) / (mot.Req * Beq + mot.Kt*mot.Ke);
 
-%% PID anti-windup parameters
-% Controller Design Params
 ts    = 0.15;
 alpha = 84;             % Anything Above 84 Works!!!
 mp    = 0.1;
 
 [Kp, Ki, Kd, tl] = designPIDBode(km, Tm, gbox, ts, mp, alpha);
 
+%% Anti windup 
+% Uncomment to use the optimizer
+% gainRange = linspace(0,0.1,10);
+%tuneAntiwindupParallel(gainRange, 'Copy_of_PID_Validation.slx', 'antiwindup_results.mat');
+
+Tw = ts/5;
+Kw = 1/Tw;
 
 %% feedforward compensation parameters
 % Parameters from prof
