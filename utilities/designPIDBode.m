@@ -1,4 +1,4 @@
-function [Kp, Ki, Kd, tl] = designPIDBode(km, Tm, gbox, ts, mp, alpha)
+function [Kp, Ki, Kd, tl, wgc] = designPIDBode(km, Tm, gbox, ts, mp, alpha)
 % designPIDBode - PID Controller Design via Frequency-Domain Bode Method
 %
 % Inputs:
@@ -10,6 +10,7 @@ function [Kp, Ki, Kd, tl] = designPIDBode(km, Tm, gbox, ts, mp, alpha)
 %
 % Outputs:
 %   Kp, Ki, Kd - PID controller gains
+%   wgc    - is saved just because it's required in Lab2
 
     % Step 1: Calculate damping ratio from overshoot
     delta = log(1/mp) / sqrt(pi^2 + log(1/mp)^2);
