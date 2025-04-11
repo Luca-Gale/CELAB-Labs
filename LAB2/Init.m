@@ -4,7 +4,7 @@ addpath("../utilities/")
 datasheet; 
 
 %% Sample time
-Ts = 1e-3;
+Ts = 10e-3;
 
 %% Max stepsize of solver (if fixed step is used)
 Smax = 0.1e-3;
@@ -22,13 +22,21 @@ TL = 1/(2*wgc*10); % Multiply for 10 seems to be working soo much better. Need m
 num = [1 -1];
 den = [(TL+Ts) -TL];
 
-k_drv = (1 + drv.R3/drv.R4) * drv.R2/(drv.R1 + drv.R2);
-%inertia comp
-I_C = (gbox.N * mot.Req * Jeq_hat)/(k_drv  * mot.Kt);
-%friction comp
-F_C = mot.Req/(k_drv * mot.Kt * gbox.N);
-%BEMF comp
-B_C = (gbox.N * mot.Ke)/k_drv;
+%% Antiwindup and feedforward
+
+% Load previous antiwindup gain
+
+% Temporary value
+ts = 0.15;
+Tw = ts/5;
+Kw = 1/Tw*0.05;
+
+% Inertia comp
+I_C = (gbox.N * mot.Req * Jeq_hat)/(drv.dcgain * mot.Kt);
+% Friction comp
+F_C = mot.Req/(drv.dcgain * mot.Kt * gbox.N);
+% BEMF comp
+B_C = (gbox.N * mot.Ke)/drv.dcgain;
 
 %% PID with different discretization methods
 % CT transfer function
