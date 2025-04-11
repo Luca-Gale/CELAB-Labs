@@ -21,7 +21,9 @@ ts    = 0.15;
 alpha = 84;             % Anything Above 84 Works!!!
 mp    = 0.1;
 
-[Kp, Ki, Kd, tl] = designPIDBode(km, Tm, gbox, ts, mp, alpha);
+[Kp, Ki, Kd, tl, wgc] = designPIDBode(km, Tm, gbox, ts, mp, alpha);
+
+%save('../utilities/PID_gains_with_estimated_params', 'Kp', 'Kd', 'Ki', 'tl', 'wgc');
 
 %% Anti windup 
 % Uncomment to use the optimizer
@@ -29,25 +31,28 @@ mp    = 0.1;
 %tuneAntiwindupParallel(gainRange, 'Copy_of_PID_Validation.slx', 'antiwindup_results.mat');
 
 Tw = ts/5;
-Kw = 1/Tw;
+Kw = 1/Tw*0.05;
 
-%% feedforward compensation parameters
+%% Feedforward compensation parameters
 % Parameters from prof
-Beq_p = 1.41e-6;
-Jeq_p = 6.54e-7;
-tau_sf_p = 7.02e-3;
+%Beq_p = 1.41e-6;
+%Jeq_p = 6.54e-7;
+%tau_sf_p = 7.02e-3;
 
-k_drv = (1 + drv.R3/drv.R4) * drv.R2/(drv.R1 + drv.R2);
-%inertia comp
-I_C = (gbox.N * mot.Req * Jeq_p)/(k_drv  * mot.Kt);
-%friction comp
-F_C = mot.Req/(k_drv * mot.Kt * gbox.N);
-%BEMF comp
-B_C = (gbox.N * mot.Ke)/k_drv;
+% Load Beq, Jeq_hat, tau_sf
+load('black-box-estimation.mat');
+
+% Inertia comp
+I_C = (gbox.N * mot.Req * Jeq_hat)/(drv.dcgain * mot.Kt);
+% Friction comp
+F_C = mot.Req/(drv.dcgain * mot.Kt * gbox.N);
+% BEMF comp
+B_C = (gbox.N * mot.Ke)/drv.dcgain;
+
 %% load data
 Tau_sf = 0.005709536387019;
 Jl = mld .JD + 3* gbox .J72 ;
-Jeq = mot.J + (Jl / gbox .N1 ^2) ;
+Jeq = mot.J + (Jl / gbox .N1 ^2);
 %Jeq = 5.801020129074022e-05;
 Beq = 1.223604206496999e-06;
 
