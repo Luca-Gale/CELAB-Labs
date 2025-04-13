@@ -3,25 +3,19 @@ close all
 clc
 
 % Load the Model and the Params
-Init
 addpath('../LAB0/')
+load black-box-estimation.mat
+datasheet;
 
 %% Primary Parameter Declaration
-% Estimated Parameters
-Jeq_hat = 5.801020129074022e-07;      % Equivalent Inertia [kg.m^2]
-Beq = 1.223604206496999e-06;          % Equivalent Viscous Friction [Nm/(mot.Rd/s)]
-Tau_sf = 0.005709536387019;           % Static Friction [Nm]
-
-% Recalculating Constants
-a22 = (mot.Req * Beq + mot.Kt*mot.Ke) / (mot.Req * Jeq_hat);
-b2 = (drv.dcgain * mot.Kt) / (gbox.N * mot.Req * Jeq_hat);
-
-% State-Space Matrices
-A = [0, 1; 0, a22];
-B = [0, b2]';
+% System Model
+Tm = (mot.Req * Jeq_hat)/(mot.Req*Beq + mot.Kt*mot.Ke);
+A = [0, 1;0, -1/Tm];
+B = [0; drv.dcgain * mot.Kt/(gbox.N1 * mot.Req * Jeq_hat)];
 C = [1, 0];
 D = 0;
 
+% State Estimation
 delta_est = 1/sqrt(2);
 wc = 2*pi*50;
 
@@ -34,20 +28,14 @@ Zeta = log(1/Mp) / sqrt(pi^2 + log(1/Mp)^2);
 Wn = 3 / Zeta / Ts;
 
 % Desired Poles
-lamc1 = -Zeta * Wn + 1j * Wn * sqrt(1 - Zeta^2);
-CtrlPoles = [lamc1, conj(lamc1)];
+C1 = -Zeta * Wn + 1j * Wn * sqrt(1 - Zeta^2);
+C2 = conj(C1);
+CtrlPoles = [C1, C2];
 
-% lame1 = Wn * exp(1j*(-pi + pi/6));
-% lame2 = Wn * exp(1j*(-pi + pi/12));
-% lame3 = -Wn;
-% lame4 = conj(lame2);
-% lame5 = conj(lame1);
-% ObsvPoles = [lame1, lame2, lame3, lame4, lame5];
-
-lame1 = 2*Wn * exp(1j*(-pi + pi/12));
-lame2 = -2*Wn;
-lame3 = conj(lame1);
-ObsvPoles = [lame1, lame2, lame3];
+L1 = 2*Wn * exp(1j*(-pi + pi/12));
+L2 = -2*Wn;
+L3 = conj(L1);
+ObsvPoles = [L1, L2, L3];
 
 %% Reference + Disturbance Exo-System
 % Input Specifications

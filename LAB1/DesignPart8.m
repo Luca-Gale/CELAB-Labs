@@ -3,24 +3,21 @@ close all
 clc
 
 % Load the Model and the Params
-Init
 addpath('../LAB0/')
+load black-box-estimation.mat
+datasheet;
 
 %% Primary Parameter Declaration
-% Estimated Parameters
-Jeq_hat = 5.801020129074022e-07;      % Equivalent Inertia [kg.m^2]
-Beq     = 1.223604206496999e-06;      % Equivalent Viscous Friction [Nm/(mot.Rd/s)]
-Tau_sf  = 0.005709536387019;          % Static Friction [Nm]
-
-% Recalculating Constants
-a22 = (mot.Req * Beq + mot.Kt*mot.Ke) / (mot.Req * Jeq_hat);
-b2 = (drv.dcgain * mot.Kt) / (gbox.N * mot.Req * Jeq_hat);
-
-% State-Space Matrices
-A = [0, 1; 0, a22];
-B = [0, b2]';
+% System Model
+Tm = (mot.Req * Jeq_hat)/(mot.Req*Beq + mot.Kt*mot.Ke);
+A = [0, 1;0, -1/Tm];
+B = [0; drv.dcgain * mot.Kt/(gbox.N1 * mot.Req * Jeq_hat)];
 C = [1, 0];
 D = 0;
+
+% State Estimation
+delta_est = 1/sqrt(2);
+wc = 2*pi*50;
 
 %% Design and Test
 % Desired Second Order System Characteristics
