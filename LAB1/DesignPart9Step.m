@@ -4,6 +4,7 @@ clc
 
 % Load the Model and the Params
 addpath('../LAB0/')
+addpath('../utilities/')
 load black-box-estimation.mat
 datasheet;
 
