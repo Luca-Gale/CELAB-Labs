@@ -3,24 +3,21 @@ close all
 clc
 
 % Load the Model and the Params
-Init
 addpath('../LAB0/')
+load black-box-estimation.mat
+datasheet;
 
 %% Primary Parameter Declaration
-% Estimated Parameters
-Jeq_hat = 5.801020129074022e-05;      % Equivalent Inertia [kg.m^2]
-Beq = 1.223604206496999e-06;          % Equivalent Viscous Friction [Nm/(mot.Rd/s)]
-Tau_sf = 0.005709536387019;           % Static Friction [Nm]
-
-% Recalculating Constants
-Tm = (mot.Req * Beq + mot.Kt*mot.Ke) / (mot.Req * Jeq_hat);
-km = (drv.dcgain * mot.Kt) / (gbox.N * mot.Req * Jeq_hat);
-
-% State-Space Matrices
-A = [0, 1; 0, -1/Tm];
-B = [0, km/(gbox.N*Tm)]';
+% System Model
+Tm = (mot.Req * Jeq_hat)/(mot.Req*Beq + mot.Kt*mot.Ke);
+A = [0, 1;0, -1/Tm];
+B = [0; drv.dcgain * mot.Kt/(gbox.N1 * mot.Req * Jeq_hat)];
 C = [1, 0];
 D = 0;
+
+% State Estimation
+delta_est = 1/sqrt(2);
+wc = 2*pi*20;
 
 %% Design and Test
 % Desired Second Order System Characteristics
@@ -31,8 +28,13 @@ Zeta = log(1/Mp) / sqrt(pi^2 + log(1/Mp)^2);
 Wn = 3 / Zeta / Ts;
 
 % Specify Poles
-Lambda = Wn * exp(1j*(-pi + [pi/4, -pi/4, pi/6, -pi/6, 0]));
+L1 = Wn * exp(1j * (-pi + pi/4));
+L2 = conj(L1);
+L3 = Wn * exp(1j * (-pi + pi/6));
+L4 = conj(L3);
+L5 = -Wn;
 
+Lambda = [L1, L2, L3, L4, L5];
 
 %% Design and Validate(Part 5 6)
 TrCandidates = [0.15, 0.25, 1, 0.5];     % Sine Sig Period Candidates
