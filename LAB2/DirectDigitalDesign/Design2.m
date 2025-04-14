@@ -18,7 +18,7 @@ D = 0;
 
 % Desired Second Order System Characteristics
 Mp = 0.1;                     % Over Shoot Percent
-SettlingTime = 0.15;          % Settling Time with 5 Percent 
+SettlingTime = 0.15;          % Settling Time with 5 Percent
 
 Zeta = log(1/Mp) / sqrt(pi^2 + log(1/Mp)^2);
 Wn = 3 / Zeta / SettlingTime;
@@ -27,42 +27,63 @@ Sigma = ss(A, B, C, D);
 
 % Discretize the System
 TsCand = [1, 10, 50] / 1000;
-Ts = TsCand(3);
 
-Sigma_d = c2d(Sigma, Ts, 'zoh');
-[F, G, H, J] = ssdata(Sigma_d);
+load_system("Part2.slx");
+for i = 1:numel(TsCand)
 
-%% Reduced Order Observer Design
-DesiredEig = 0.05;
-L = (F(2, 2) - DesiredEig) / F(1, 2);
+    % Sampling Time
+    Ts = TsCand(i);
 
-Ao = F(2, 2) - L * F(1, 2);
-Bo = [G(2) - L * G(1), Ao * L + F(2, 1) - L * F(1, 1)];
-Co = [0; 1];
-Do = [0, 1; 0, L];
+    Sigma_d = c2d(Sigma, Ts, 'zoh');
+    [F, G, H, J] = ssdata(Sigma_d);
 
-%% Controller Design
+    %% Reduced Order Observer Design
+    DesiredEig = 0.05;
+    L = (F(2, 2) - DesiredEig) / F(1, 2);
 
-% New Integral System
-Fi = [1, H; [0; 0], F];
-Gi = [0; G];
+    Ao = F(2, 2) - L * F(1, 2);
+    Bo = [G(2) - L * G(1), Ao * L + F(2, 1) - L * F(1, 1)];
+    Co = [0; 1];
+    Do = [0, 1; 0, L];
+
+    %% Controller Design
+
+    % New Integral System
+    Fi = [1, H; [0; 0], F];
+    Gi = [0; G];
 
 
-% Controller Gain Matrix
-% p = -Zeta * Wn + 1j * Wn * sqrt(1 - Zeta^2);
-% DesiredPoles = [p, conj(p), -Wn];
-% DesiredPoles = exp(DesiredPoles * Ts);
+    % Controller Gain Matrix
+    % p = -Zeta * Wn + 1j * Wn * sqrt(1 - Zeta^2);
+    % DesiredPoles = [p, conj(p), -Wn];
+    % DesiredPoles = exp(DesiredPoles * Ts);
 
-p = Wn * exp(1j*(-pi + pi/4));
-DesiredPoles = [p, conj(p), -Wn];
-DesiredPoles = exp(DesiredPoles * Ts);
+    p = Wn * exp(1j*(-pi + pi/4));
+    DesiredPoles = [p, conj(p), -Wn];
+    DesiredPoles = exp(DesiredPoles * Ts);
 
-Ktmp = place(Fi, Gi, DesiredPoles);
-Ki   = Ktmp(1);
-K    = Ktmp(2:3);
+    Ktmp = place(Fi, Gi, DesiredPoles);
+    Ki   = Ktmp(1);
+    K    = Ktmp(2:3);
 
-% Feedforward Gains
-Coefs = [F - eye(2), G; H, 0] \ [0; 0; 1];
-Nx    = Coefs(1:2);
-Nu    = Coefs(end);
-Nr    = Nu + K * Nx;
+    % Feedforward Gains
+    Coefs = [F - eye(2), G; H, 0] \ [0; 0; 1];
+    Nx    = Coefs(1:2);
+    Nu    = Coefs(end);
+    Nr    = Nu + K * Nx;
+
+    %% Simulate the System and Plot the Results
+    out = sim("Part2.slx");
+
+    figure("Name", string(i), "Units", "normalized", "OuterPosition", [0, 0, 1, 1]);
+    stairs(out.X.Time, out.X.Data, 'LineWidth', 2, 'DisplayName', 'Nominal Model Output'); hold on
+    stairs(out.XBB.Time, out.XBB.Data, 'LineWidth', 2, 'DisplayName', 'Black Box Model Output');
+    xlabel("Time [sec]")
+    ylabel("Motor Position [degree]")
+    title(['Discretizating with Ts = ' num2str(Ts)])
+    grid on
+    hold on
+    legend
+
+end
+close_system("Part2.slx");
