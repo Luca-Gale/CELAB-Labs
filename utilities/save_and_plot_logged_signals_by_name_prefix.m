@@ -163,3 +163,9 @@ function [group, functionName, unit] = parse_signal_name(signalName)
         unit = '';
     end
 end
+
+
+% To manually create the out struct:
+% out = struct();
+% out.logsout = logsout;
+% assignin('base', 'out', out);
