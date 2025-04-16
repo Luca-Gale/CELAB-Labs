@@ -1,5 +1,5 @@
 clear all
-clc
+%clc
 
 %% load data
 Init_ali
@@ -7,7 +7,7 @@ Jeq = 6.51e-07;
 Beq = 1.223604206496999e-06;
 wn = 3/(delta * ts);
 
-%% State-Space-Reduced-Observer
+%% State-Space
 Tm = (mot.Req * Jeq)/(mot.Req*Beq + mot.Kt*mot.Ke);
 
 A = [[0 1 ],
@@ -44,14 +44,14 @@ KI = K_robust(1);
 K2 = K_robust(2:3);
 %% new OBSERVER NORMAL STATE SPACE OBSERVER
 
-T_s=0.001;
+T_s=0.001*50;
 %T_s = 5;
 % T_s = 1ms , 10ms , 50ms
 I=[1,0;0,1];
 T_trsf=I;
 A_prime=T_trsf^(-1)*A*T_trsf;
 
-% lambdasaba=  5*(-delta * wn) + j*wn*sqrt(1-delta^2)*5; %-delta*5*wn+1i*5*wn*(1-(delta)^(2))^(0.5);
+
 %lambda0=5*sigma;
 lambdaeddi = -5 * abs(pole1);
 lambdaali = (-delta * wn) + j*wn*sqrt(1-delta^2)*5;
@@ -62,7 +62,7 @@ A12_prime=A_prime(1,2);
 L=acker(A22_prime,A12_prime,lambdaali);
 
 A0=A22_prime-L*A12_prime;
-TM=-(A0+L)^(-1);
+%TM=-(A0+L)^(-1);
 
 B_prime=T_trsf*B;
 B0=[B_prime(2)-L*B_prime(1),A0*L+A_prime(2,1)-L*A_prime(1,1)];
