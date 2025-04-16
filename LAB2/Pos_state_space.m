@@ -21,13 +21,14 @@ M = [A, B;C, D];
 Ans = M \ [0; 0; 1];
 Nu = Ans(3,1);
 Nx = Ans(1:2,1);
-
+Mp = 0.1; 
+delta = -log(Mp) / sqrt(pi^2 + log(Mp)^2);
 ts    = 0.15;
 delta_est = 1/sqrt(2);
-wn = 3/(delta_est * ts);
+wn = 3/(delta * ts);
 
-pole1 = (-delta_est * wn) + 1j*wn*sqrt(1-delta_est^2);
-pole2 = (-delta_est * wn) - 1j*wn*sqrt(1-delta_est^2);
+pole1 = (-delta * wn) + 1j*wn*sqrt(1-delta^2);
+pole2 = (-delta * wn) - 1j*wn*sqrt(1-delta^2);
 poles = [pole1,pole2];
 K = acker(A,B,poles);
 sigma = real(pole1);
@@ -39,13 +40,17 @@ KI = K_robust(1);
 K2 = K_robust(2:3);
 %% Lab 2 state space 1to4
 Mp = 0.1;               % Desired overshoot (e.g., 10%)
-Zeta = -log(Mp) / sqrt(pi^2 + log(Mp)^2);
-C1 = -Zeta*wn + 1j*wn*sqrt(1-Zeta^2);
+delta = -log(Mp) / sqrt(pi^2 + log(Mp)^2);
+C1 = -delta*wn + 1j*wn*sqrt(1-delta^2);
 C2 = conj(C1);
 
 % Observer design
-lambda_o = 5 * abs(C1);       % Observer eigenvalue (5x controller bandwidth)
-L = lambda_o - (1/Tm); 
+%lambda_o = 5 * abs(C1); % Observer eigenvalue (5x controller bandwidth)
+lambda_o = (-delta*wn)+j*wn*sqrt(1-delta^2)*5;
+%lambda_o = -delta*wn*5;
+
+%L = lambda_o - (1/Tm); 
+L=acker(A(2,2), A(1,2), lambda_o);
 %  reduced-order observer dynamics
 Ao = -1/Tm - L;
 Bo = [B(2), Ao*L];  % B(2) = drv.dcgain*mot.Kt/(gbox.N1*mot.Req*Jeq)
@@ -56,7 +61,7 @@ Do = [0, 1; 0, L];
 eig(Ao);
 
 % Experimental sampling times
-T = 0.001;  
+T = 0.001*50;  
 % Discrete observer matrices
 Phi_o = 1 + Ao * T;      
 Gamma_o = Bo * T;
