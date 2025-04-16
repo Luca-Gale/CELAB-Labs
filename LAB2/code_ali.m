@@ -2,7 +2,7 @@ clear all
 clc
 
 %% load data
-Init
+Init_ali
 Jeq = 6.51e-07;
 Beq = 1.223604206496999e-06;
 wn = 3/(delta * ts);
@@ -60,7 +60,7 @@ lambda2 = -5*wn*delta;
 
 A22_prime=A_prime(2,2);
 A12_prime=A_prime(1,2);
-L=acker(A22_prime,A12_prime,lamdaali);
+L=acker(A22_prime,A12_prime,lambdaali);
 
 A0=A22_prime-L*A12_prime;
 TM=-(A0+L)^(-1);
