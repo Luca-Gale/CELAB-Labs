@@ -44,7 +44,7 @@ KI = K_robust(1);
 K2 = K_robust(2:3);
 %% new OBSERVER NORMAL STATE SPACE OBSERVER
 
-T_s=0.001*50;
+T_s=0.001;
 %T_s = 5;
 % T_s = 1ms , 10ms , 50ms
 I=[1,0;0,1];
@@ -56,7 +56,6 @@ A_prime=T_trsf^(-1)*A*T_trsf;
 lambdaeddi = -5 * abs(pole1);
 lambdaali = (-delta * wn) + j*wn*sqrt(1-delta^2)*5;
 lambda2 = -5*wn*delta;
-% eig=lambda0;
 
 A22_prime=A_prime(2,2);
 A12_prime=A_prime(1,2);
