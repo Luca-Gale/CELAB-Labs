@@ -7,34 +7,58 @@ addpath('../LAB0/')
 addpath('../utilities/')
 load black-box-estimation.mat
 datasheet;
-%% Parameters and matrices
-Tm = (mot.Req * Jeq_hat) / (mot.Req * Beq + mot.Kt*mot.Ke);
-Km = (drv.dcgain*mot.Kt) / (mot.Req * Jeq_hat);
+%% From part 1 to 4 of lab 1
+Jl = mld .JD + 3* gbox .J72 ;
+Jeq = mot.J + (Jl / gbox .N1 ^2);
 
-% State-space matrices
-A = [0    1;
-     0 -1/Tm];
-B = [0;
-     Km/(gbox.N1*Tm)];
-C = [1 0];
+Tm = (mot.Req * Jeq)/(mot.Req*Beq + mot.Kt*mot.Ke);
+A = [0, 1;0, -1/Tm];
+B = [0; drv.dcgain*mot.Kt/(gbox.N1*mot.Req*Jeq)];
+C = [1, 0];
 D = 0;
 
-Mp = 0.1;           % Over Shoot Percent
-Ts = 0.15;          % Settling Time with 5 Percent
-Zeta = log(1/Mp) / sqrt(pi^2 + log(1/Mp)^2);
-Wn = 3 / Zeta / Ts;
-C1 = -Zeta * Wn + 1j * Wn * sqrt(1 - Zeta^2);
+M = [A, B;C, D];
+Ans = M \ [0; 0; 1];
+Nu = Ans(3,1);
+Nx = Ans(1:2,1);
+
+ts    = 0.15;
+delta_est = 1/sqrt(2);
+wn = 3/(delta_est * ts);
+
+pole1 = (-delta_est * wn) + 1j*wn*sqrt(1-delta_est^2);
+pole2 = (-delta_est * wn) - 1j*wn*sqrt(1-delta_est^2);
+poles = [pole1,pole2];
+K = acker(A,B,poles);
+sigma = real(pole1);
+poles2 = sigma * ones (3 ,1);
+Be= [0 ; B];
+Ae =[0  ,C; zeros(2, 1), A ];
+K_robust  = acker (Ae , Be , poles2 );
+KI = K_robust(1);
+K2 = K_robust(2:3);
+%% Lab 2 state space 1to4
+Mp = 0.1;               % Desired overshoot (e.g., 10%)
+Zeta = -log(Mp) / sqrt(pi^2 + log(Mp)^2);
+C1 = -Zeta*wn + 1j*wn*sqrt(1-Zeta^2);
 C2 = conj(C1);
-CtrlPoles = [C1, C2];
-K = place(A, B, CtrlPoles);
 
-% REDUCED ORDER OBSERVER DESIGN
-lambda_o = 5 * abs(C1);  % 5x controller bandwidth
-
-L = -lambda_o - (-1/Tm);% Observer gain  
-
-% Observer matrices (for implementation)
+% Observer design
+lambda_o = 5 * abs(C1);       % Observer eigenvalue (5x controller bandwidth)
+L = lambda_o - (1/Tm); 
+%  reduced-order observer dynamics
 Ao = -1/Tm - L;
-Bo = [B(2), Ao*L];  
-Co = [0; 1];        % Output matrix for observer
-Do = [0 1; 0 L];    % Feedthrough matrices
+Bo = [B(2), Ao*L];  % B(2) = drv.dcgain*mot.Kt/(gbox.N1*mot.Req*Jeq)
+Co = [0; 1];
+Do = [0, 1; 0, L];
+
+% Verify stability
+eig(Ao);
+
+% Experimental sampling times
+T = 0.001;  
+% Discrete observer matrices
+Phi_o = 1 + Ao * T;      
+Gamma_o = Bo * T;
+Ho = Co;
+Jo = Do;
