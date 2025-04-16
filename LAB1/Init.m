@@ -7,8 +7,8 @@ addpath("../utilities/")
 datasheet;                            
 
 %% Filters parameters
-delta_est = 1/sqrt(2);
-wc = 2*pi*20;
+%delta_est = 1/sqrt(2);
+%wc = 2*pi*20;
 
 %% Estimated Parameters for black box model
 load('black-box-estimation.mat');
@@ -49,24 +49,16 @@ F_C = mot.Req/(drv.dcgain * mot.Kt * gbox.N);
 % BEMF comp
 B_C = (gbox.N * mot.Ke)/drv.dcgain;
 
-%% load data
-Tau_sf = 0.005709536387019;
-Jl = mld .JD + 3* gbox .J72 ;
-Jeq = mot.J + (Jl / gbox .N1 ^2);
-%Jeq = 5.801020129074022e-05;
-Beq = 1.223604206496999e-06;
 
-wn = 3/(delta_est * ts); % ERRORE
-%delta2 = log(1/mp) / sqrt((pi*pi) +(log(1/mp)*log(1/mp)));
-
-%% high pass ("real derivative")
+%% High pass filter ("real derivative")
 delta_h1 = 1 / sqrt(2);
 wc = 2*pi*50;
 
 %% State Space
-Tm = (mot.Req * Jeq)/(mot.Req*Beq + mot.Kt*mot.Ke);
+Tm = (mot.Req * Jeq_hat) / (mot.Req*Beq + mot.Kt*mot.Ke);
+km = (drv.dcgain * mot.Kt) / (mot.Req * Beq + mot.Kt * mot.Ke);
 A = [0, 1;0, -1/Tm];
-B = [0; drv.dcgain*mot.Kt/(gbox.N1*mot.Req*Jeq)];
+B = [0; km/gbox.N1/Tm];
 C = [1, 0];
 D = 0;
 
