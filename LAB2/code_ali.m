@@ -1,5 +1,5 @@
 clear all
-%clc
+clc
 
 %% load data
 Init_ali
@@ -44,7 +44,7 @@ KI = K_robust(1);
 K2 = K_robust(2:3);
 %% new OBSERVER NORMAL STATE SPACE OBSERVER
 
-T_s=0.001*10;
+T_s=0.001;
 %T_s = 5;
 % T_s = 1ms , 10ms , 50ms
 I=[1,0;0,1];
@@ -56,10 +56,10 @@ A_prime=T_trsf^(-1)*A*T_trsf;
 lambdaeddi = -5 * abs(pole1);
 lambdaali = (-delta * wn) + j*wn*sqrt(1-delta^2)*5;
 lambda2 = -5*wn*delta;
-
+lambdanew = (-delta * wn)*5 + j*wn*sqrt(1-delta^2);
 A22_prime=A_prime(2,2);
 A12_prime=A_prime(1,2);
-L=acker(A22_prime,A12_prime,lambdaali);
+L=acker(A22_prime,A12_prime,lambdanew);
 
 A0=A22_prime-L*A12_prime;
 %TM=-(A0+L)^(-1);
@@ -72,11 +72,16 @@ D0=T_trsf*[0,1;0,L];
 %% Discrete regulator
 REG_co= ss(A0,B0,C0,D0);
 % FORWARD
-AF=1+A0*T_s;
-BF=B0*T_s;
-CF=C0;
-DF=D0;
+AF1=1+A0*T_s;
+BF1=B0*T_s;
+CF1=C0;
+DF1=D0;
 
+REG_disc=c2d(REG_co,T_s,'forward');
+AF=REG_disc.A;
+BF=REG_disc.B;
+CF=REG_disc.C;
+DF=REG_disc.D;
 % BACKWARD
 AB = inv(eye(1) - A0*T_s);
 BB = AB * B0 * T_s;
