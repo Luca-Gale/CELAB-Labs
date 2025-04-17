@@ -44,7 +44,7 @@ KI = K_robust(1);
 K2 = K_robust(2:3);
 %% new OBSERVER NORMAL STATE SPACE OBSERVER
 
-T_s=0.001*50;
+T_s=0.001*10;
 %T_s = 5;
 % T_s = 1ms , 10ms , 50ms
 I=[1,0;0,1];
