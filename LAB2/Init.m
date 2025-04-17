@@ -54,3 +54,7 @@ C_T = minreal(Kp+Ki/s+Kd*s/(1+TL*s));
 s = (z-1)/Ts;
 C_FE = minreal(Kp+Ki/s+Kd*s/(1+TL*s));
 [num_FE, den_FE] = tfdata(C_FE, 'v');
+
+% Exact method
+C_EX = c2d(C, Ts, 'zoh');
+[num_EX, den_EX] = tfdata(C_EX, 'v');
