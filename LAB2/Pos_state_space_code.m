@@ -46,8 +46,8 @@ C1 = -delta*wn + 1j*wn*sqrt(1-delta^2);
 C2 = conj(C1);
 
 % Observer design
-lambda_o = 5 * abs(C1); % Observer eigenvalue (5x controller bandwidth)
-lambda_o = (-delta * wn) + 1j*wn*sqrt(1-delta^2)*5;
+%lambda_o = 5 * abs(C1); % Observer eigenvalue (5x controller bandwidth)
+lambda_o = (-delta * wn)*5;% + 1j*wn*sqrt(1-delta^2);
 % lambda_o = -wn*5;
 
 %L = lambda_o - (1/Tm); 
@@ -62,7 +62,7 @@ Do = [0, 1; 0, L];
 eig(Ao);
 
 % Experimental sampling times
-T = 0.001*50;  
+T = 0.001*10;  
 % Discrete observer matrices
 Phi_o = 1 + Ao * T;      
 Gamma_o = Bo * T;
