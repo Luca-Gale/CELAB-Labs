@@ -19,8 +19,9 @@
 helpsearch*/
 
 # Simulink code generation folders
-slprj/
-sccprj/
+*slprj*/
+*sccprj*/
+*win64*/
 
 # Matlab code generation folders
 codegen/
@@ -37,3 +38,15 @@ octave-workspace
 # End of https://www.toptal.com/developers/gitignore/api/matlab
 LAB0/simulink/sim.slxc
 *.slxc
+*.rxw64
+
+# C code generation files
+*.c
+*.h
+*.o
+*.rsp
+*.bat
+*.mk
+*.exe
+*.dmr
+*.rxw64
