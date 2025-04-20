@@ -6,8 +6,13 @@ T10=load('ali_newlambda_10ms.mat');
 T50ali=load('ali_newlambda_50ms.mat');
 T50prof=load('ali_proflambda_50ms.mat');
 
+idx = T1.ali_50ms.time < 1.5;
+idx1 = T10.ali_50ms.time < 1.5;
+idx2 = T50ali.ali_50ms.time < 1.5;
+idx3 = T50prof.ali_50ms.time < 1.5;
+
 figure;
-plot(T1.ali_50ms.time,T1.ali_50ms.signals(1).values)
+stairs(T1.ali_50ms.time(idx),T1.ali_50ms.signals(1).values(idx))
 grid on;
 xlabel('X-axis: Time (s)');
 ylabel('Y-axis: Position');
@@ -15,7 +20,7 @@ title('Ts = 1ms');
 
 
 figure;
-plot(T10.ali_50ms.time,T10.ali_50ms.signals(1).values)
+stairs(T10.ali_50ms.time(idx1),T10.ali_50ms.signals(1).values(idx1))
 grid on;
 xlabel('X-axis: Time (s)');
 ylabel('Y-axis: Position');
@@ -24,18 +29,18 @@ title('Ts = 10ms');
 
 
 figure;
-plot(T50ali.ali_50ms.time,T50ali.ali_50ms.signals(1).values)
+stairs(T50ali.ali_50ms.time(idx2),T50ali.ali_50ms.signals(1).values(idx2))
 grid on;
 xlabel('X-axis: Time (s)');
 ylabel('Y-axis: Position');
 title('Ts = 50ms');
 % legend();
 
-
-figure;
-plot(T50prof.ali_50ms.time,T50prof.ali_50ms.signals(1).values)
-grid on;
-xlabel('X-axis: Time (s)');
-ylabel('Y-axis: Position');
-title('Ts = 50ms');
-% legend();
+% 
+% figure;
+% stairs(T50prof.ali_50ms.time(idx3),T50prof.ali_50ms.signals(1).values(idx3))
+% grid on;
+% xlabel('X-axis: Time (s)');
+% ylabel('Y-axis: Position');
+% title('Ts = 50ms');
+% % legend();

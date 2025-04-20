@@ -1,5 +1,5 @@
 clear all
-clc
+% clc
 
 %% load data
 Init_ali

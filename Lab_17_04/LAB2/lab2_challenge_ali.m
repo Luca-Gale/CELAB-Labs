@@ -1,5 +1,5 @@
 clear all
-clc
+% clc
 
 %% load data
 Init_ali
@@ -23,18 +23,19 @@ M_inv = inv(M);
 Ans = M_inv * [0;0;1];
 Nx = Ans(1:2,1);
 Nu = Ans(3,1);
-pole1 =(-delta * wn) + j*wn*sqrt(1-delta^2);
-pole2 = (-delta * wn) - j*wn*sqrt(1-delta^2);
+T1=75;
+T2=75;
+pole1 = (-delta * wn)-T1 + j*(wn*sqrt(1-delta^2)+T2);
+pole2 = (-delta * wn)-T1 - j*(wn*sqrt(1-delta^2)+T2);
 poles = [pole1,pole2];
 K = acker(A,B,poles);
 Nr=Nu+K * Nx;
 %% part 2 - Integral 
 sigma = real ( pole1 );
 omega_d = imag ( pole1 );
-poles2 = [sigma+1i*omega_d sigma-1i*omega_d sigma ];
-poles2 = sigma * ones (3 ,1);
-%poles2 = [2*sigma+1i*omega_d 2*sigma-1i*omega_d 2* sigma ];
-%poles2 = [2*sigma+1i*omega_d 2*sigma-1i*omega_d 3*sigma ];
+poles2 = [sigma+ j*omega_d, sigma-j*omega_d, sigma ];
+%poles2 = sigma * ones (3 ,1);
+
 Ae =[0  ,C; zeros(2, 1), A ];
 Be= [0 ; B];
 Ce =[0 C]; 
@@ -44,8 +45,8 @@ KI = K_robust(1);
 K2 = K_robust(2:3);
 %% new OBSERVER NORMAL STATE SPACE OBSERVER
 
-T_s=0.001*50;
-%T_s = 5;
+T_s=0.001*10;
+
 % T_s = 1ms , 10ms , 50ms
 I=[1,0;0,1];
 T_trsf=I;
@@ -56,7 +57,7 @@ A_prime=T_trsf^(-1)*A*T_trsf;
 lambdaeddi = -5 * abs(pole1);
 lambdaali = (-delta * wn) + j*wn*sqrt(1-delta^2)*5;
 lambda2 = -5*wn*delta;
-lambdanew = (-delta * wn)*5 + j*wn*sqrt(1-delta^2);
+lambdanew = ((-delta * wn)-T1)*5 + j*(wn*sqrt(1-delta^2)+T2);
 A22_prime=A_prime(2,2);
 A12_prime=A_prime(1,2);
 L=acker(A22_prime,A12_prime,lambdanew);
@@ -72,16 +73,17 @@ D0=T_trsf*[0,1;0,L];
 %% Discrete regulator
 REG_co= ss(A0,B0,C0,D0);
 % FORWARD
-AF1=1+A0*T_s;
-BF1=B0*T_s;
-CF1=C0;
-DF1=D0;
+% AF=1+A0*T_s;
+% BF=B0*T_s;
+% CF=C0;
+% DF=D0;
 
 REG_disc=c2d(REG_co,T_s,'forward');
 AF=REG_disc.A;
 BF=REG_disc.B;
 CF=REG_disc.C;
 DF=REG_disc.D;
+
 % BACKWARD
 AB = inv(eye(1) - A0*T_s);
 BB = AB * B0 * T_s;
@@ -99,18 +101,5 @@ AZ=REG_disc.A;
 BZ=REG_disc.B;
 CZ=REG_disc.C;
 DZ=REG_disc.D;
-
-% REG_disc=c2d(REG_co,T_s,'backward');
-% AB=REG_disc.A;
-% BB=REG_disc.B;
-% CB=REG_disc.C;
-% DB=REG_disc.D;
-
-% REG_disc = c2d_euler(REG_co,T_s,'backward');
-% AB=REG_disc.A;
-% BB=REG_disc.B;
-% CB=REG_disc.C;
-% DB=REG_disc.D;
-
 
 
