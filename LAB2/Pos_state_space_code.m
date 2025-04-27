@@ -62,9 +62,45 @@ Do = [0, 1; 0, L];
 eig(Ao);
 
 % Experimental sampling times
-T = 0.001*10;  
+T = 0.001*80;  
 % Discrete observer matrices
+% Forward
 Phi_o = 1 + Ao * T;      
 Gamma_o = Bo * T;
 Ho = Co;
 Jo = Do;
+
+%% Inizializzare una struttura per salvare i risultati
+
+
+% 1. Forward Euler
+I = eye(size(Ao));
+ForwardEuler_Phi = I + Ao*T;
+ForwardEuler_Gamma = Bo*T;
+ForwardEuler_H = Co;
+ForwardEuler_J = Do;
+
+% 2. Backward Euler
+temp = inv(I - Ao*T); % Calcolo dell'inversa
+BackwardEuler_Phi = temp;
+BackwardEuler_Gamma = (temp * Bo) * T;
+BackwardEuler_H = Co * temp;
+BackwardEuler_J = Do + Co * temp * Bo * T;
+
+% Trapezoidal
+half_AT = (Ao*T)/2;
+temp = inv(I - half_AT);
+Trapezoidal_Phi = (I + half_AT) * temp;
+Trapezoidal_Gamma = temp * Bo * sqrt(T); % Nota: √T come in tabella
+Trapezoidal_H = sqrt(T) * Co * temp;
+Trapezoidal_J = Do + Co * temp * (Bo*T)/2;
+
+% Γ come nella tabella (con √T)
+Gamma_manual = Trapezoidal_Gamma * sqrt(T);
+
+% 4. Metodo Exact (Soluzione Continua)
+Exact_Phi = expm(Ao*T);
+Exact_Gamma = inv(Ao) * ( Exact_Phi - I) * Bo;
+Exact_H = Co;
+Exact_J = Do;
+
