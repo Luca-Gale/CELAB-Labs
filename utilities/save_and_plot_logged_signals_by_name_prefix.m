@@ -16,14 +16,23 @@
 %
 %    ➤ Signals with no double underscore ("__") are treated individually.
 %
-% 3. After simulation, run this script. It will:
+% 3. After simulation, run this script with an optional subfolder name:
+%       save_and_plot_logged_signals_by_name_prefix('RunName')
+%
+%    - If a subfolder name is provided, results are saved to:
+%         ./logged_outputs_YYYYMMDD/RunName/
+%
+%    - If no subfolder name is provided, results are saved to:
+%         ./logged_outputs_YYYYMMDD/
+%
+%    The function will:
 %    - Scan all struct variables in the base workspace.
 %    - Identify signals based on `.signals.label` and `.time`.
 %    - Group, plot, and save the data accordingly.
 %
 % OUTPUT:
 %    A folder named "logged_outputs_YYYYMMDD" is created in the current
-%    directory, containing:
+%    directory, optionally with a user-defined subfolder, containing:
 %      - PNG plots for each signal or group
 %      - Corresponding .mat files with signal data
 %
@@ -34,20 +43,7 @@
 %
 % =========================================================================
 
-function save_and_plot_logged_signals_by_name_prefix()
-
-% OUTDATED, realtime simulation doesn't log signals with logsout
-% Get 'out' from base workspace
-% if ~evalin('base', 'exist(''out'', ''var'')')
-%     error('Variable ''out'' not found in base workspace.');
-% end
-% out = evalin('base', 'out');
-%
-% try
-%     logsout = out.logsout;
-% catch
-%     error('The ''out'' object does not contain ''logsout''.');
-% end
+function save_and_plot_logged_signals_by_name_prefix(subfolderName)
 
 % Detect valid structs rom workspace
 vars = evalin('base', 'whos');
@@ -90,7 +86,11 @@ end
 
 % Output directory
 dateStr = datestr(now, 'yyyymmdd'); % Format: YYYYMMDD
-outputFolder = fullfile(pwd, ['logged_outputs_' dateStr]);
+if nargin < 1 || isempty(subfolderName)
+    outputFolder = fullfile(pwd, ['logged_outputs_' dateStr]);
+else
+    outputFolder = fullfile(pwd, ['logged_outputs_' dateStr], sanitize_filename(subfolderName));
+end
 if ~exist(outputFolder, 'dir')
     mkdir(outputFolder);
 end
