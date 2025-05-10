@@ -13,8 +13,11 @@ ozin2Nm = 0.706e-2;         % [oz*inch] -> [N*m]
 mot.R = 2.6;                        % armature resistance
 mot.L = 180e-6;                     % armature inductance
 mot.Kt = 1.088 * ozin2Nm;           % torque constant
+Kt = mot.Kt;
 mot.Ke = 0.804e-3 * rads2rpm;       % back-EMF constant
+Ke = mot.Ke;
 mot.J = 5.523e-5 * ozin2Nm;         % rotor inertia
+Jm = mot.J;
 mot.B = 0.0;                        % viscous friction coeff (n.a.)
 mot.eta = 0.69;                     % motor efficiency
 mot.PN = 3.23/mot.eta;              % nominal output power
@@ -24,9 +27,11 @@ mot.tauN = mot.Kt*mot.IN;           % nominal torque
 mot.taus = 2.42 * ozin2Nm;          % stall torque
 mot.w0 = 7200 * rpm2rads;           % no-load speed
 
+
 % >>>>>>>> Gearbox nominal parameters
 % planetary gearbox Micromotor SA 23/1
 gbox.N1 = 14;           % 1st reduction ratio (planetary gearbox)
+N = gbox.N1;
 gbox.eta1 = 0.80;       % gearbox efficiency
 
 % external transmission gears
@@ -65,14 +70,17 @@ drv.outmax = 12;        % Op-Amp max output voltage
 
 % voltage driver dc-gain
 drv.dcgain = drv.R2/(drv.R1+drv.R2) * (1 + drv.R3/drv.R4);
+k_drv = drv.dcgain;
 
 % voltage driver time constant
 drv.Tc = drv.C1 * drv.R1*drv.R2/(drv.R1+drv.R2);
+T_drv = drv.Tc;
 
 % >>>>>>>> Sensors data
 % shunt resistor
 sens.curr.Rs = 0.5;
 mot.Req = sens.curr.Rs + mot.R;         % Equivalent Resistance
+Req = mot.Req;
 
 % Hewlett-Packard HEDS-5540#A06 optical encoder
 sens.enc.ppr = 500*4;                   % Pulses per rotation
