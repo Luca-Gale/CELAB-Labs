@@ -51,10 +51,13 @@ mld.tausf = 1.0e-2; % static friction (estimated)
 
 % beam & elastic joint params
 mld.Jb = 1.4e-3; % moment of inertia
+Jb = mld.Jb;
 mld.d = 5.0e-2; % flex joint damping coeff (estimated)
 mld.wn = 24.5; % flex joint natural freq (estimated)
 mld.Bb = mld.Jb * 2*mld.d*mld.wn; % beam viscous friction
+Bb = mld.Bb;
 mld.k = mld.Jb * mld.wn^2; % flex joint stiffness
+k = mld.k;
 
 %% Voltage driver nominal parameters
 
@@ -101,10 +104,12 @@ sens.pot2.range.V = 5; % voltage range
 sens.pot2.range.th_deg = 340; % angle range [deg]
 sens.pot2.range.th = sens.pot2.range.th_deg * deg2rad; % angle range [rad]
 sens.pot2.deg2V = sens.pot2.range.V / sens.pot2.range.th_deg; % sensitivity [V/deg]
+deg2V = sens.pot2.deg2V;
 sens.pot2.rad2V = sens.pot2.range.V / sens.pot2.range.th; % sensitivity [V/rad]
 sens.pot2.V2deg = 1/sens.pot2.deg2V; % conversion gain [V] −> [deg]
+V2deg = sens.pot2.V2deg;
 sens.pot2.V2rad = 1/sens.pot2.rad2V; % conversion gain [V] −> [rad]
-sens.pot2.noise.var = 3.5e-7; % out noise variance [V^2]
+% sens.pot2.noise.var = 3.5e-7; % out noise variance [V^2]
 
 %% Data acquisition board (daq) data
 
