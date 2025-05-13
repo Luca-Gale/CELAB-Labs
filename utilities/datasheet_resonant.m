@@ -109,7 +109,7 @@ sens.pot2.rad2V = sens.pot2.range.V / sens.pot2.range.th; % sensitivity [V/rad]
 sens.pot2.V2deg = 1/sens.pot2.deg2V; % conversion gain [V] −> [deg]
 V2deg = sens.pot2.V2deg;
 sens.pot2.V2rad = 1/sens.pot2.rad2V; % conversion gain [V] −> [rad]
-% sens.pot2.noise.var = 3.5e-7; % out noise variance [V^2]
+sens.pot2.noise.var = 3.5e-7; % out noise variance [V^2]
 
 %% Data acquisition board (daq) data
 
