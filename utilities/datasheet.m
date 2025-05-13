@@ -85,6 +85,7 @@ Req = mot.Req;
 % Hewlett-Packard HEDS-5540#A06 optical encoder
 sens.enc.ppr = 500*4;                   % Pulses per rotation
 sens.enc.pulse2deg = 360/sens.enc.ppr;  % [Pulses] -> [deg]
+pulse2deg = sens.enc.pulse2deg;
 sens.enc.pulse2rad = 2*pi/sens.enc.ppr; % [Pulses] -> [rad]
 sens.enc.deg2pulse = sens.enc.ppr/360;  % [deg] -> [Pulses]
 sens.enc.rad2pulse = sens.enc.ppr/2/pi; % [rad] -> [Pulses]
