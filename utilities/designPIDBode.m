@@ -1,16 +1,16 @@
-function [Kp, Ki, Kd, tl, wgc] = designPIDBode(km, Tm, gbox, ts, mp, alpha)
+function [Kp, Ki, Kd, tl, wgc] = designPIDBode(P, ts, mp, alpha)
 % designPIDBode - PID Controller Design via Frequency-Domain Bode Method
 %
 % Inputs:
-%   km, Tm - there parameters depends on the estimation of Beq and Jeq
+%   P      - Transfer function of the plant
 %   ts     - Desired settling time (s)
 %   mp     - Maximum overshoot (e.g., 0.1 for 10%)
-%   alpha  - Ratio Ti/Td (empirically found that 84 is good)
+%   alpha  - Ratio Ti/Td 
 %   tl     - Constant for derivative filter
 %
 % Outputs:
 %   Kp, Ki, Kd - PID controller gains
-%   wgc    - is saved just because it's required in Lab2
+%   wgc    - Gain crossover frequency (rad/s)
 
     % Step 1: Calculate damping ratio from overshoot
     delta = log(1/mp) / sqrt(pi^2 + log(1/mp)^2);
@@ -23,12 +23,12 @@ function [Kp, Ki, Kd, tl, wgc] = designPIDBode(km, Tm, gbox, ts, mp, alpha)
 
     % Step 4: Compute plant transfer function at wgc
     s = 1i * wgc;
-    P = km / (gbox.N * s * (Tm * s + 1));
+    Pwgc = evalfr(P, s);
 
     % Step 5: Gain and phase compensation
-    abs_P = abs(P);
+    abs_P = abs(Pwgc);
     deltak = 1 / abs_P;
-    deltaphi = -pi + phim - angle(P);
+    deltaphi = -pi + phim - angle(Pwgc);
 
     % Step 6: PID parameters from compensation
     Kp = deltak * cos(deltaphi);
@@ -38,6 +38,8 @@ function [Kp, Ki, Kd, tl, wgc] = designPIDBode(km, Tm, gbox, ts, mp, alpha)
     Kd = Kp * Td;
     Ki = Kp / Ti;
     tl = 1/(3*wgc); % proportional coefficient between 2-5. Chosen 3
+
+    
 
     % Optional: Display values
     fprintf('PID Gains:\n  Kp = %.4f\n  Ki = %.4f\n  Kd = %.4f\n tl = %.4f\n', Kp, Ki, Kd, tl);    
