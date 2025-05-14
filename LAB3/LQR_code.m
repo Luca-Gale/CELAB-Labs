@@ -74,7 +74,7 @@ vect=[1/(thetahDEV)^2,1/(thetadDEV)^2,0,0];
 Q=diag(vect);
 R=1/(uDEV)^2;
 
-Kfb2=lqr(sysGp,Q,R);
+Kfb2=lqr(sysG,Q,R);
 t0=0.2;
 t1=0.7;
 
