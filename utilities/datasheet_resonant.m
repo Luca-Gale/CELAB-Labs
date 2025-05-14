@@ -49,6 +49,8 @@ mld.Jh = 6.84e-4; % moment of inertia
 mld.Bh = 2.5e-4; % viscous friction coeff
 mld.tausf = 1.0e-2; % static friction (estimated)
 
+mld.Jeq = mot.J + mld.Jh/N^2;
+
 % beam & elastic joint params
 mld.Jb = 1.4e-3; % moment of inertia
 Jb = mld.Jb;
