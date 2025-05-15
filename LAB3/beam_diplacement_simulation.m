@@ -36,6 +36,7 @@ clc;
 
 % Add resources to workspace
 addpath('..\..\CELAB-Labs\utilities\');
+datasheet;
 datasheet_resonant;
 
 % Parameters
@@ -43,11 +44,11 @@ delta = 0.05;      % Damping ratio
 omega_n = 24.4;      % Natural frequency [rad/s]
 A = 30;            % Initial amplitude [deg]
 phi = 0;           % Initial phase [rad]
-
+%%
 load_system("estimation_simulink.slx");
 out = sim("estimation_simulink.slx");
 close_system("estimation_simulink.slx", 0);
-
+%%
 % Define time array and signal values
 t = out.out.time;
 noisySignal = out.out.signals.values;

@@ -53,18 +53,20 @@ Nx=[N(1);N(2);N(3);N(4)];
 Nu=N(5);
 
 %% LQR 2.4.1
-
+sys1 =ss(Aprime,BTOT,C,0);
 sysG=ss(Aprime,Bprime,C,0);
 sysGp=ss(-Aprime,-Bprime,C,0);
-% r=0.00025;
-% r =  0.000111;
+r11 =0.00025;
+r12 =  0.000111;
 % [r2, poles2] = rlocfind(sysG*sysGp);
 % poles2 = [-15.1843 +39.7205i, -15.1843 -39.7205i,-9.6459 +20.8460i, -9.6459 -20.8460i];
 r2=2.5899e-04;
 % r2 = 0.000111;
 % r2 = 2.4732e-06;
 % Kfb=lqry(sysG,1,r);
-Kfb=lqry(sysG,1,r2);
+Klqr1=lqry(sysG,1,r2);
+Klqr11=lqry(sysG,1,r11);
+Klqr12=lqry(sysG,1,r12);
 
 %% 2.4.3
 thetahDEV=0.3*50*pi/180;
@@ -74,7 +76,7 @@ vect=[1/(thetahDEV)^2,1/(thetadDEV)^2,0,0];
 Q=diag(vect);
 R=diag(1/(uDEV)^2);
 
-Kfb2=lqr(sysG,Q,R);
+Klqr2=lqr(sysG,Q,R);
 t0=0.2;
 t1=0.7;
 
