@@ -35,11 +35,20 @@
 %   as well as the estimated signal.
 %
 
+%% Add resources to workspace (before blackbox simulation)
+%clear all;
+%close all;
+%clc;
+addpath('..\..\CELAB-Labs\utilities\');
+datasheet;
+datasheet_resonant;
+
 %% Run from this point if the beam displacement is already available in the workspace
 
-% Keep the notation
-% noisySignal = *theta_d*;
-% t = *time vector of theta_d*;
+% Define time array and signal values
+% IMPORTANT: adapt these lines to realtime simulation output
+noisySignal = out.out.signals.values;
+t = out.out.time;
 
 % Since in a noisy signal it's hard to detect local maxima, use Savitzky-Golay filter to 
 % smooth the entire signal 
