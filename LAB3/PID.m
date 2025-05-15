@@ -13,10 +13,12 @@ load('..\utilities\black-box-estimation.mat');
 s = tf('s'); % Definizione della variabile di Laplace
 
 % Calcolo diretto di Dτ(s)
-D_tau = (Jeq_hat*s^2 + Beq*s + k/N^2)*(Jb*s^2 + Bb*s + k) - (k/N^2);
+% D_tau = (Jeq_hat*s^2 + Beq*s + k/N^2)*(Jb*s^2 + Bb*s + k) - (k/N^2);
 % num = [Jb,Bb,k];
 % den = D_tau;
-P = (1/N)*(Jb*s^2+Bb*s+k)/D_tau;
+% P = (1/N)*(Jb*s^2+Bb*s+k)/D_tau;
+D_tau_prime = Jeq_hat*Jb*s^3+(Jeq_hat*Bb+Jb*Beq)*s^2+(Beq*Bb+k*(Jeq_hat+Jb/(N^2)))*s+k*(Beq+Bb/(N^2));
+P = (k_drv*Kt*k)/(N*s*(Req*D_tau_prime+Kt*Ke*(Jb*s^2+Bb*s+k)));
 ts = 0.85;   
 mp = 0.3;
 alpha = 4;
