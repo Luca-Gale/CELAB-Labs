@@ -43,11 +43,11 @@
 
 % Since in a noisy signal it's hard to detect local maxima, use Savitzky-Golay filter to 
 % smooth the entire signal 
-interpFactor = 20; % Higher the factor, the more aggressive is the interpolation 
+interpFactor = 30; % Higher the factor, the more aggressive is the interpolation 
 smoothSignal = smoothdata(noisySignal, 'sgolay', interpFactor);
 
 % Threshold for consecutive peak differences in percentage
-diffThreshold = 10;  % Percentage threshold
+diffThreshold = 1;  % Percentage threshold
 
 % Peak detection on the smoothed signal
 [peakValues, peakTimes] = detectPeaks(abs(smoothSignal), t);
@@ -117,6 +117,9 @@ Bb_hat = Jb*2*delta_hat*omega_n_hat;
 
 % Joint stiffness estimation
 k_hat = Jb*omega_n_hat^2;
+
+%% Saving in .mat file the results
+%save('..\utilities\black-box-resonat-load', "delta_hat", "omega_n_hat", "Bb_hat", "k_hat", "noisySignal", "t", "smoothSignal");
 
 %% Plotting
 figure;
