@@ -1,5 +1,5 @@
 %% data
-clear all
+% clear all
 
 addpath('..\..\CELAB-Labs\utilities\');
 datasheet;
