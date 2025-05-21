@@ -39,20 +39,25 @@
 %clear all;
 %close all;
 %clc;
-addpath('..\..\CELAB-Labs\utilities\');
+addpath('..\utilities\');
 datasheet;
 datasheet_resonant;
+t0 = 0.2;
+t1 = 0.7;
 
+%%
+%y = out.signals.values;
 %% Run from this point if the beam displacement is already available in the workspace
 
 % Define time array and signal values
 % IMPORTANT: adapt these lines to realtime simulation output
-noisySignal = out.out.signals.values;
-t = out.out.time;
+%noisySignal = out.signals.values;
+noisySignal = y;
+%t = out.out.time;
 
 % Since in a noisy signal it's hard to detect local maxima, use Savitzky-Golay filter to 
 % smooth the entire signal 
-interpFactor = 30; % Higher the factor, the more aggressive is the interpolation 
+interpFactor = 50; % Higher the factor, the more aggressive is the interpolation 
 smoothSignal = smoothdata(noisySignal, 'sgolay', interpFactor);
 
 % Threshold for consecutive peak differences in percentage
@@ -113,8 +118,8 @@ espilon_hat = theta_hat_ls(1);
 delta_hat = espilon_hat/sqrt(pi^2 + espilon_hat^2)
 
 % Natural frequency estimation
-Tk = diff(peakTimes);
-omega_k_hat = pi ./ Tk;
+Tk = diff(peakTimes)
+omega_k_hat = pi ./ Tk
 omega_hat = mean(omega_k_hat);
 omega_n_hat = omega_hat/sqrt(1-delta_hat^2)
 
@@ -122,10 +127,10 @@ omega_n_hat = omega_hat/sqrt(1-delta_hat^2)
 Jb = 1.4e-3; % [kg*m^2]
 
 % Beam viscous friction coefficient estimation
-Bb_hat = Jb*2*delta_hat*omega_n_hat;
+Bb_hat = Jb*2*delta_hat*omega_n_hat
 
 % Joint stiffness estimation
-k_hat = Jb*omega_n_hat^2;
+k_hat = Jb*omega_n_hat^2
 
 %% Saving in .mat file the results
 %save('..\utilities\black-box-resonat-load', "delta_hat", "omega_n_hat", "Bb_hat", "k_hat", "noisySignal", "t", "smoothSignal");
@@ -154,7 +159,7 @@ plot(t, interpValues, 'r--', 'LineWidth', 1);
 
 xlabel('Time [s]');
 ylabel('|theta_d| [deg]');
-ylim([0,smoothSignal(1)+5]);
+%ylim([0,smoothSignal(1)+5]);
 title('Absolute Value with Interpolated Peaks');
 grid on;
 
