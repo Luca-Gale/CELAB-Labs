@@ -35,4 +35,4 @@ T_w = t_s/5;
 Kw = 1/T_w;
 
 %%
-info = stepinfo(out.y.signals.values, out.y.time, out.ref.signals.values(end))
+%info = stepinfo(out.y.signals.values, out.y.time, out.ref.signals.values(end))
