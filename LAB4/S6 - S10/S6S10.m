@@ -1,7 +1,7 @@
 %% Create the matrix M & C & g & Fv1
 
 %create the M matrix
-
+LoadParameters
 M12=2*gbox.N*(1-gbox.N)*mot.rot.Iyy+(body.m*body.zb+2*mot.rot.m*mot.rot.zb)*wheel.r;
 
 M11=2*wheel.Iyy + 2*gbox.N^2*mot.rot.Iyy + (body.m + 2*wheel.m+2*mot.rot.m)*wheel.r^2;
