@@ -1,0 +1,11 @@
+rtGetNaN.o: \
+ D:/Lab4_celab_29_05/CELAB-Labs/LAB4/realtimeE4/realtimeE4_ert_rtw/rtGetNaN.c \
+ D:/Lab4_celab_29_05/CELAB-Labs/LAB4/realtimeE4/realtimeE4_ert_rtw/rtwtypes.h \
+ D:/Lab4_celab_29_05/CELAB-Labs/LAB4/realtimeE4/realtimeE4_ert_rtw/rtGetNaN.h \
+ D:/Lab4_celab_29_05/CELAB-Labs/LAB4/realtimeE4/realtimeE4_ert_rtw/rt_nonfinite.h
+
+D:/Lab4_celab_29_05/CELAB-Labs/LAB4/realtimeE4/realtimeE4_ert_rtw/rtwtypes.h:
+
+D:/Lab4_celab_29_05/CELAB-Labs/LAB4/realtimeE4/realtimeE4_ert_rtw/rtGetNaN.h:
+
+D:/Lab4_celab_29_05/CELAB-Labs/LAB4/realtimeE4/realtimeE4_ert_rtw/rt_nonfinite.h:

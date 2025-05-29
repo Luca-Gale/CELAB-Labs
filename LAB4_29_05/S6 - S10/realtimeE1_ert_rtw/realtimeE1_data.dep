@@ -1,0 +1,32 @@
+realtimeE1_data.o: \
+ D:/LAB4_C~1/CELAB-~1/LAB4/S6-S10~1/realtimeE1_ert_rtw/realtimeE1_data.c \
+ D:/LAB4_C~1/CELAB-~1/LAB4/S6-S10~1/realtimeE1_ert_rtw/realtimeE1.h \
+ D:/LAB4_C~1/CELAB-~1/LAB4/S6-S10~1/realtimeE1_ert_rtw/rtwtypes.h \
+ C:/PROGRA~1/MATLAB/R2024b/simulink/include/rtw_continuous.h \
+ D:/LAB4_C~1/CELAB-~1/LAB4/S6-S10~1/realtimeE1_ert_rtw/rtwtypes.h \
+ C:/PROGRA~1/MATLAB/R2024b/simulink/include/rtw_solver.h \
+ C:/PROGRA~1/MATLAB/R2024b/simulink/include/rtw_continuous.h \
+ D:/LAB4_C~1/CELAB-~1/LAB4/S6-S10~1/realtimeE1_ert_rtw/realtimeE1_types.h \
+ D:/LAB4_C~1/CELAB-~1/LAB4/S6-S10~1/realtimeE1_ert_rtw/rtGetNaN.h \
+ D:/LAB4_C~1/CELAB-~1/LAB4/S6-S10~1/realtimeE1_ert_rtw/rt_nonfinite.h \
+ D:/LAB4_C~1/CELAB-~1/LAB4/S6-S10~1/realtimeE1_ert_rtw/zero_crossing_types.h
+
+D:/LAB4_C~1/CELAB-~1/LAB4/S6-S10~1/realtimeE1_ert_rtw/realtimeE1.h:
+
+D:/LAB4_C~1/CELAB-~1/LAB4/S6-S10~1/realtimeE1_ert_rtw/rtwtypes.h:
+
+C:/PROGRA~1/MATLAB/R2024b/simulink/include/rtw_continuous.h:
+
+D:/LAB4_C~1/CELAB-~1/LAB4/S6-S10~1/realtimeE1_ert_rtw/rtwtypes.h:
+
+C:/PROGRA~1/MATLAB/R2024b/simulink/include/rtw_solver.h:
+
+C:/PROGRA~1/MATLAB/R2024b/simulink/include/rtw_continuous.h:
+
+D:/LAB4_C~1/CELAB-~1/LAB4/S6-S10~1/realtimeE1_ert_rtw/realtimeE1_types.h:
+
+D:/LAB4_C~1/CELAB-~1/LAB4/S6-S10~1/realtimeE1_ert_rtw/rtGetNaN.h:
+
+D:/LAB4_C~1/CELAB-~1/LAB4/S6-S10~1/realtimeE1_ert_rtw/rt_nonfinite.h:
+
+D:/LAB4_C~1/CELAB-~1/LAB4/S6-S10~1/realtimeE1_ert_rtw/zero_crossing_types.h:
