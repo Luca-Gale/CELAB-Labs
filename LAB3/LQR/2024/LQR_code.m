@@ -1,10 +1,10 @@
 %% data
 clear all
 
-addpath('..\..\CELAB-Labs\utilities\');
+addpath('..\..\..\..\CELAB-Labs\utilities\');
 datasheet;
 datasheet_resonant;
-load('..\utilities\black-box-estimation.mat');
+load('..\..\..\utilities\black-box-estimation.mat');
 
 
 k_sim=mld.k;
