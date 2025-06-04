@@ -89,4 +89,6 @@ Estimator.Delta = 1/sqrt(2);
 Estimator.num = [Estimator.Wc^2, 0];
 Estimator.den = [1, 2*Estimator.Wc*Estimator.Delta, Estimator.Wc^2];
 
-
+%% Bias Estimation Timing
+t0 = 0.2;
+t1 = 0.7;
