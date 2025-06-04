@@ -66,7 +66,7 @@ LambdaC = [L1, L2, L3, L4];
 
 % State Feedback Controller Design
 K = place(Aprime, Bprime, LambdaC);
-K = [0.56, 56, 0.0331, -0.4866];
+% K = [0.56, 56, 0.0331, -0.4866];
 
 % Nominal Tracking Gain
 TmpGain = [Aprime, Bprime; Cprime 0] \ [zeros(4, 1); 1];
@@ -80,3 +80,7 @@ Estimator.Wc = 2*pi*50;
 Estimator.Delta = 1/sqrt(2);
 Estimator.num = [Estimator.Wc^2, 0];
 Estimator.den = [1, 2*Estimator.Wc*Estimator.Delta, Estimator.Wc^2];
+
+%% Bias Estimation Timing
+t0 = 0.2;
+t1 = 0.7;
