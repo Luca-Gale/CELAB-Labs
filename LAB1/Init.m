@@ -21,7 +21,9 @@ ts    = 0.15;
 alpha = 84;             % Anything Above 84 Works!!!
 mp    = 0.1;
 
-[Kp, Ki, Kd, tl, wgc] = designPIDBode(km, Tm, gbox, ts, mp, alpha);
+s = tf('s');
+P = km/(Tm*s+1)*N;
+[Kp, Ki, Kd, tl, wgc] = designPIDBode(P, ts, mp, alpha);
 
 %save('../utilities/PID_gains_with_estimated_params', 'Kp', 'Kd', 'Ki', 'tl', 'wgc');
 
