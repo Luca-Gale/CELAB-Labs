@@ -7,6 +7,7 @@ close all;
 clc;
 
 %% FRICTION ESTIMATOR
+addpath("../utilities/");
 load_system("Friction_Estimation.slx");
 % Positive velocity
 set_param(['Friction_Estimation' '/Manual Switch'], 'sw', '1'); % Set first input
