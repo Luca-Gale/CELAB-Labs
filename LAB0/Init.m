@@ -39,7 +39,9 @@ ts    = 0.15;
 alpha = 84;             % Anything Above 84 Works!!!
 mp    = 0.1;
 
-[Kp, Ki, Kd, tl] = designPIDBode(km, Tm, gbox, ts, mp, alpha);
+s = tf('s');
+P = km / (gbox.N * s * (Tm * s + 1));
+[Kp, Ki, Kd, tl, wgc] = designPIDBode(P, ts, mp, alpha);
 
 % When PID tuning is done, uncomment this line to save the gains in 
 % 'utilities' folder and make them accessible across all labs
