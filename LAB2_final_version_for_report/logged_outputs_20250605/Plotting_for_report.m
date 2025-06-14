@@ -64,6 +64,16 @@ for i = 1:length(timeSignalPairs)
     interpolated{i} = struct('t', t_common, 'y', y_interp);
 end
 
+% Prefilter t make sure all the signals are 0 before the step
+zero_indices = (interpolated{1}.y == 0);
+
+% Set all signals to zero at those time points
+for i = 1:length(interpolated)
+    y = interpolated{i}.y;
+    y(zero_indices) = 0;
+    interpolated{i}.y = y;
+end
+
 %% Main plot
 figure;
 hold on;
